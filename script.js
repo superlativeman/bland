@@ -200,8 +200,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return { success: false, error: phoneError.message };
             }
             
-            // Store position as lowercase (no more title case conversion)
-            const formattedPosition = data.position;
+            // Store position as lowercase with hyphens
+            console.log('Original position:', data.position);
+            const formattedPosition = data.position.replace(/\s+/g, '-');
+            console.log('Formatted position with hyphens:', formattedPosition);
             
             const insertData = {
                 first_name: data.firstName,
@@ -215,6 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 accessibility_notes: null // Default to null
             };
             
+            console.log('Final insertData position_applied_for:', insertData.position_applied_for);
             console.log('Prepared insert data:', insertData);
             
             // Try the insert operation

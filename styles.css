@@ -159,15 +159,16 @@ input:hover, select:hover {
 }
 
 .reset-btn {
-    background: #667eea;
+    background: #6b7280;
     color: white;
     border: none;
     padding: 12px 24px;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 500;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-top: 40px;
 }
 
 .reset-btn:hover {
