@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Debug Test</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Supabase Debug Test</h1>
+    <div id="status">Testing connection...</div>
+    <div id="result"></div>
+
+    <script src="config.js"></script>
+    <script>
+        async function testSupabaseConnection() {
+            const statusDiv = document.getElementById('status');
+            const resultDiv = document.getElementById('result');
+            
+            try {
+                // Test 1: Check if Supabase client is initialized
+                statusDiv.innerHTML = 'Step 1: Checking Supabase client...';
+                
+                if (!window.supabaseClient) {
+                    throw new Error('Supabase client not found');
+                }
+                
+                resultDiv.innerHTML += '<p>✅ Supabase client initialized successfully</p>';
+                
+                // Test 2: Try to connect to the database
+                statusDiv.innerHTML = 'Step 2: Testing database connection...';
+                
+                const { data, error } = await window.supabaseClient
+                    .from('applicants')
+                    .select('count')
+                    .limit(1);
+                
+                if (error) {
+                    throw new Error(`Database connection failed: ${error.message}`);
+                }
+                
+                resultDiv.innerHTML += '<p>✅ Database connection successful</p>';
+                
+                // Test 3: Try to insert a test record
+                statusDiv.innerHTML = 'Step 3: Testing insert operation...';
+                
+                const testData = {
+                    first_name: 'Test',
+                    last_name: 'User',
+                    email: 'test@example.com',
+                    phone_e164: '+1234567890',
+                    position_applied_for: 'solutions-engineer',
+                    application_date: new Date().toISOString().split('T')[0],
+                    still_interested: true,
+                    accessibility_requirements: false,
+                    accessibility_notes: null
+                };
+                
+                const { data: insertData, error: insertError } = await window.supabaseClient
+                    .from('applicants')
+                    .insert([testData])
+                    .select();
+                
+                if (insertError) {
+                    throw new Error(`Insert failed: ${insertError.message}`);
+                }
+                
+                resultDiv.innerHTML += '<p>✅ Insert operation successful</p>';
+                resultDiv.innerHTML += `<p>Inserted record ID: ${insertData[0].id}</p>`;
+                
+                // Test 4: Clean up test record
+                statusDiv.innerHTML = 'Step 4: Cleaning up test record...';
+                
+                const { error: deleteError } = await window.supabaseClient
+                    .from('applicants')
+                    .delete()
+                    .eq('email', 'test@example.com');
+                
+                if (deleteError) {
+                    resultDiv.innerHTML += `<p>⚠️ Cleanup failed: ${deleteError.message}</p>`;
+                } else {
+                    resultDiv.innerHTML += '<p>✅ Test record cleaned up</p>';
+                }
+                
+                statusDiv.innerHTML = '✅ All tests passed! Supabase is working correctly.';
+                
+            } catch (error) {
+                statusDiv.innerHTML = '❌ Test failed';
+                resultDiv.innerHTML += `<p style="color: red;">Error: ${error.message}</p>`;
+                console.error('Debug test error:', error);
+            }
+        }
+        
+        // Run the test when page loads
+        document.addEventListener('DOMContentLoaded', testSupabaseConnection);
+    </script>
+</body>
+</html>
