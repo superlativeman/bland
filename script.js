@@ -237,8 +237,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Check for specific error types
                 if (error.message.includes('row-level security policy')) {
                     return { success: false, error: 'Database access denied. Please check RLS policies.' };
-                } else if (error.message.includes('duplicate key')) {
-                    return { success: false, error: 'An application with this email already exists.' };
                 } else if (error.message.includes('violates not-null constraint')) {
                     return { success: false, error: 'Missing required fields. Please check your input.' };
                 } else {
