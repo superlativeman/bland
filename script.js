@@ -78,6 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 form.style.display = 'none';
                 successMessage.classList.remove('hidden');
                 console.log('Application submitted successfully!');
+                
+                // Start countdown and initiate Bland AI call
+                startCountdownAndCall(applicationData.phone);
             } else {
                 throw new Error(result.error || 'Failed to submit application');
             }
@@ -329,4 +332,82 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     `;
     document.head.appendChild(style);
+
+    // Function to start countdown and initiate Bland AI call
+    function startCountdownAndCall(phoneNumber) {
+        const countdownElement = document.getElementById('countdown');
+        const countdownContainer = document.getElementById('countdownContainer');
+        const callStatus = document.getElementById('callStatus');
+        let countdown = 10;
+
+        // Update countdown display
+        const updateCountdown = () => {
+            countdownElement.textContent = countdown;
+            
+            if (countdown <= 0) {
+                // Hide countdown and show call status
+                countdownContainer.style.display = 'none';
+                callStatus.classList.remove('hidden');
+                
+                // Make Bland AI API call
+                initiateBlandAICall(phoneNumber);
+            } else {
+                countdown--;
+                setTimeout(updateCountdown, 1000);
+            }
+        };
+
+        // Start countdown
+        updateCountdown();
+    }
+
+    // Function to initiate Bland AI call
+    async function initiateBlandAICall(phoneNumber) {
+        try {
+            console.log('Initiating Bland AI call to:', phoneNumber);
+            
+            // Bland AI API configuration
+            const blandAIHeaders = {
+                'Authorization': 'org_1403e741250fdaa939fe339f04239ec29517c91855191492b56e12f95d398b835cf5f69d061203e0663569',
+                'Content-Type': 'application/json'
+            };
+
+            const blandAIData = {
+                "phone_number": phoneNumber,
+                "pathway_id": "4106469e-4a96-4313-a073-930cbadf9bc6"
+            };
+
+            console.log('Bland AI request data:', blandAIData);
+
+            // Make API call to Bland AI
+            const response = await axios.post('https://api.bland.ai/v1/calls', blandAIData, {
+                headers: blandAIHeaders
+            });
+
+            console.log('Bland AI response:', response.data);
+
+            if (response.data.status === 'success') {
+                // Update call status to show success
+                const callStatus = document.getElementById('callStatus');
+                callStatus.innerHTML = `
+                    <div class="call-icon">✅</div>
+                    <p>Call initiated successfully!</p>
+                    <small style="color: #718096; margin-top: 8px; display: block;">Call ID: ${response.data.call_id}</small>
+                `;
+            } else {
+                throw new Error('Bland AI call failed');
+            }
+
+        } catch (error) {
+            console.error('Error initiating Bland AI call:', error);
+            
+            // Update call status to show error
+            const callStatus = document.getElementById('callStatus');
+            callStatus.innerHTML = `
+                <div class="call-icon">❌</div>
+                <p>Failed to initiate call</p>
+                <small style="color: #e53e3e; margin-top: 8px; display: block;">Error: ${error.message}</small>
+            `;
+        }
+    }
 });

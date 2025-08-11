@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Supabase Client Library -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <!-- Axios for HTTP requests -->
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -57,6 +59,18 @@
                     <div class="success-icon">✓</div>
                     <h3>Application Submitted!</h3>
                     <p>Thank you for your interest. We'll be in touch soon.</p>
+                    
+                    <div id="countdownContainer" class="countdown-container">
+                        <p>We'll call you in:</p>
+                        <div id="countdown" class="countdown">10</div>
+                        <p class="countdown-text">seconds</p>
+                    </div>
+                    
+                    <div id="callStatus" class="call-status hidden">
+                        <div class="call-icon">📞</div>
+                        <p>Initiating your call...</p>
+                    </div>
+                    
                     <button id="resetForm" class="reset-btn">Submit Another Application</button>
                 </div>
             </div>
