@@ -80,6 +80,22 @@ input:hover, select:hover {
     border-color: #cbd5e0;
 }
 
+input[readonly] {
+    background-color: #edf2f7;
+    color: #718096;
+    border-color: #e2e8f0;
+    cursor: not-allowed;
+}
+
+input[readonly]:hover {
+    border-color: #e2e8f0;
+}
+
+input[readonly]:focus {
+    border-color: #e2e8f0;
+    box-shadow: none;
+}
+
 .help-text {
     display: block;
     font-size: 0.85rem;
