@@ -79,8 +79,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 successMessage.classList.remove('hidden');
                 console.log('Application submitted successfully!');
                 
-                // Start countdown and initiate Bland AI call
-                startCountdownAndCall(applicationData.phone);
+                // Immediately initiate Bland AI call
+                initiateBlandAICall(applicationData.phone);
             } else {
                 throw new Error(result.error || 'Failed to submit application');
             }
@@ -331,38 +331,14 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
 
-    // Function to start countdown and initiate Bland AI call
-    function startCountdownAndCall(phoneNumber) {
-        const countdownElement = document.getElementById('countdown');
-        const countdownContainer = document.getElementById('countdownContainer');
-        const callStatus = document.getElementById('callStatus');
-        let countdown = 10;
-
-        // Update countdown display
-        const updateCountdown = () => {
-            countdownElement.textContent = countdown;
-            
-            if (countdown <= 0) {
-                // Hide countdown and show call status
-                countdownContainer.style.display = 'none';
-                callStatus.classList.remove('hidden');
-                
-                // Make Bland AI API call
-                initiateBlandAICall(phoneNumber);
-            } else {
-                countdown--;
-                setTimeout(updateCountdown, 1000);
-            }
-        };
-
-        // Start countdown
-        updateCountdown();
-    }
-
     // Function to initiate Bland AI call
     async function initiateBlandAICall(phoneNumber) {
         try {
             console.log('Initiating Bland AI call to:', phoneNumber);
+            
+            // Show call status immediately
+            const callStatus = document.getElementById('callStatus');
+            callStatus.classList.remove('hidden');
             
             // Bland AI API configuration
             const blandAIHeaders = {
@@ -386,7 +362,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (response.data.status === 'success') {
                 // Update call status to show success
-                const callStatus = document.getElementById('callStatus');
                 callStatus.innerHTML = `
                     <div class="call-icon">✅</div>
                     <p>Call initiated successfully!</p>
