@@ -5,6 +5,35 @@ const SUPABASE_CONFIG = {
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqcm96cW50d2JjdWJ2ZWthZWR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQzNDA5MzQsImV4cCI6MjA2OTkxNjkzNH0.jCH6X0aKHjdQ6aEnoW-lWtuqZzamYX-xdrwtS-uguwY'
 };
 
+// Bland AI Configuration
+// Configure your Bland AI call settings here
+const BLAND_AI_CONFIG = {
+    // API Configuration
+    apiKey: 'org_1403e741250fdaa939fe339f04239ec29517c91855191492b56e12f95d398b835cf5f69d061203e0663569',
+    apiEndpoint: 'https://api.bland.ai/v1/calls',
+    
+    // Call Configuration
+    pathwayId: '410646e9-4a96-4313-a073-930cbadf9bc6',
+    model: 'turbo', // Options: 'base' or 'turbo'
+    
+    // Call Behavior Settings
+    waitForGreeting: false,
+    record: true,
+    answeredByEnabled: true,
+    noiseCancellation: false,
+    interruptionThreshold: 100,
+    blockInterruptions: false,
+    maxDuration: 600, // Maximum call duration in seconds (5 minutes)
+    
+    // Voice and Language
+    voice: 'Alexa', // Default voice
+    language: 'en',
+    backgroundTrack: 'office',
+    
+    // Voicemail Action
+    voicemailAction: 'hangup' // Options: 'hangup', 'leave_message', 'transfer'
+};
+
 // Initialize Supabase client
 function initializeSupabase() {
     try {

@@ -340,21 +340,33 @@ document.addEventListener('DOMContentLoaded', function() {
             const callStatus = document.getElementById('callStatus');
             callStatus.classList.remove('hidden');
             
-            // Bland AI API configuration
+            // Bland AI API configuration using config
             const blandAIHeaders = {
-                'Authorization': 'org_1403e741250fdaa939fe339f04239ec29517c91855191492b56e12f95d398b835cf5f69d061203e0663569',
+                'Authorization': BLAND_AI_CONFIG.apiKey,
                 'Content-Type': 'application/json'
             };
 
             const blandAIData = {
                 "phone_number": phoneNumber,
+                "model": BLAND_AI_CONFIG.model,
+                "wait_for_greeting": BLAND_AI_CONFIG.waitForGreeting,
+                "record": BLAND_AI_CONFIG.record,
+                "answered_by_enabled": BLAND_AI_CONFIG.answeredByEnabled,
+                "noise_cancellation": BLAND_AI_CONFIG.noiseCancellation,
+                "interruption_threshold": BLAND_AI_CONFIG.interruptionThreshold,
+                "block_interruptions": BLAND_AI_CONFIG.blockInterruptions,
+                "max_duration": BLAND_AI_CONFIG.maxDuration,
+                "voice": BLAND_AI_CONFIG.voice,
+                "language": BLAND_AI_CONFIG.language,
+                "background_track": BLAND_AI_CONFIG.backgroundTrack,
+                "voicemail_action": BLAND_AI_CONFIG.voicemailAction,
                 "pathway_id": "4106469e-4a96-4313-a073-930cbadf9bc6"
             };
 
             console.log('Bland AI request data:', blandAIData);
 
             // Make API call to Bland AI
-            const response = await axios.post('https://api.bland.ai/v1/calls', blandAIData, {
+            const response = await axios.post(BLAND_AI_CONFIG.apiEndpoint, blandAIData, {
                 headers: blandAIHeaders
             });
 
