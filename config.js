@@ -24,6 +24,7 @@ const BLAND_AI_CONFIG = {
     interruptionThreshold: 100,
     blockInterruptions: false,
     maxDuration: 600, // Maximum call duration in seconds (5 minutes)
+    temperature: 0.2, // Controls AI response randomness (0.0 = deterministic, 1.0 = creative)
     
     // Voice and Language
     voice: 'Alexa', // Default voice
