@@ -14,12 +14,17 @@
 <body>
     <div class="container">
         <header>
-                    <h1>Bland Demo</h1>
-        <p class="subtitle">Enter your details to receive a call from a demo AI recruitment assistant.</p>
+                    <h1>Job Application</h1>
+        <p class="subtitle">by Elliot AI</p>
         </header>
         
         <main>
             <form id="applicationForm" class="application-form">
+                <div class="form-group">
+                    <label for="position">Position Applied For *</label>
+                    <input type="text" id="position" name="position" value="Product Designer" readonly required>
+                </div>
+                
                 <div class="form-group">
                     <label for="firstName">First Name *</label>
                     <input type="text" id="firstName" name="firstName" required>
@@ -38,12 +43,7 @@
                 <div class="form-group">
                     <label for="phone">Phone Number *</label>
                     <input type="tel" id="phone" name="phone" placeholder="+1234567890" required>
-                    <small class="help-text">Include country code (e.g., +1 for US, +44 for UK, +33 for France)</small>
-                </div>
-                
-                <div class="form-group">
-                    <label for="position">Position Applied For *</label>
-                    <input type="text" id="position" name="position" value="solutions engineer" readonly required>
+                    <small class="help-text">Include country code (e.g., +1 for US, +44 for UK)</small>
                 </div>
                 
                 <button type="submit" class="submit-btn">Submit Application</button>
@@ -54,6 +54,12 @@
                     <div class="success-icon">✓</div>
                     <h3>Application Submitted!</h3>
                     <p>Thank you for your interest. We'll be in touch soon.</p>
+                    
+                    <div id="countdownContainer" class="countdown-container">
+                        <p>We'll call you in:</p>
+                        <div id="countdown" class="countdown">10</div>
+                        <p class="countdown-text">seconds</p>
+                    </div>
                     
                     <div id="callStatus" class="call-status hidden">
                         <div class="call-icon">📞</div>

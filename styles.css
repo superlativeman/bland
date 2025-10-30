@@ -200,24 +200,67 @@ input[readonly]:focus {
 /* Responsive design */
 @media (max-width: 600px) {
     .container {
-        padding: 24px;
-        margin: 10px;
+        padding: 16px;
+        margin: 8px;
+    }
+    
+    header {
+        margin-bottom: 24px;
     }
     
     h1 {
-        font-size: 2rem;
+        font-size: 1.6rem;
+        margin-bottom: 4px;
+    }
+    
+    .subtitle {
+        font-size: 0.95rem;
     }
     
     .application-form {
-        gap: 20px;
+        gap: 12px;
+    }
+    
+    .form-group {
+        gap: 6px;
+    }
+    
+    label {
+        font-size: 0.85rem;
     }
     
     input, select {
-        padding: 10px 14px;
+        padding: 8px 12px;
+    }
+    
+    .help-text {
+        margin-top: 2px;
+        font-size: 0.8rem;
     }
     
     .submit-btn {
-        padding: 14px 28px;
+        padding: 12px 20px;
+        font-size: 1rem;
+        margin-top: 6px;
+    }
+
+    .success-message {
+        padding: 32px;
+        max-width: 100%;
+    }
+
+    .success-content {
+        gap: 16px;
+    }
+
+    .success-content p {
+        margin-bottom: 16px;
+    }
+
+    .reset-btn {
+        padding: 12px 24px;
+        font-size: 1rem;
+        margin-top: 24px;
     }
 }
 
