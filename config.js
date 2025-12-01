@@ -13,7 +13,7 @@ const BLAND_AI_CONFIG = {
     apiEndpoint: 'https://api.bland.ai/v1/calls',
     
     // Call Configuration
-    pathwayId: '410646e9-4a96-4313-a073-930cbadf9bc6',
+    pathwayId: '4106469e-4a96-4313-a073-930cbadf9bc6',
     model: 'turbo', // Options: 'base' or 'turbo'
     
     // Call Behavior Settings

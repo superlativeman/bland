@@ -4,9 +4,10 @@
   "description": "A simple job application form for Bland Demo",
   "main": "index.html",
   "scripts": {
-    "start": "npx http-server -p 3000 -o",
-    "dev": "npx http-server -p 3000 -o -c-1",
-    "serve": "python3 -m http.server 3000"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "serve": "python3 server.py",
+    "serve:http": "npx http-server -p 3000 -o"
   },
   "keywords": ["job-application", "form", "demo"],
   "author": "",

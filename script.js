@@ -348,6 +348,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const blandAIData = {
                 "phone_number": phoneNumber,
+                "pathway_id": BLAND_AI_CONFIG.pathwayId,
                 "model": BLAND_AI_CONFIG.model,
                 "wait_for_greeting": BLAND_AI_CONFIG.waitForGreeting,
                 "record": BLAND_AI_CONFIG.record,
@@ -359,39 +360,70 @@ document.addEventListener('DOMContentLoaded', function() {
                 "voice": BLAND_AI_CONFIG.voice,
                 "language": BLAND_AI_CONFIG.language,
                 "background_track": BLAND_AI_CONFIG.backgroundTrack,
-                "voicemail_action": BLAND_AI_CONFIG.voicemailAction,
-                "pathway_id": "4106469e-4a96-4313-a073-930cbadf9bc6"
+                "voicemail_action": BLAND_AI_CONFIG.voicemailAction
             };
 
             console.log('Bland AI request data:', blandAIData);
 
-            // Make API call to Bland AI
-            const response = await axios.post(BLAND_AI_CONFIG.apiEndpoint, blandAIData, {
-                headers: blandAIHeaders
+            // Use proxy endpoint to avoid CORS issues
+            // The proxy is at /api/bland-ai/call and forwards the request to Bland AI
+            const proxyEndpoint = '/api/bland-ai/call';
+            
+            // Make API call through proxy
+            const response = await axios.post(proxyEndpoint, {
+                api_key: BLAND_AI_CONFIG.apiKey,
+                data: blandAIData
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
 
-            console.log('Bland AI response:', response.data);
+            console.log('Bland AI response status:', response.status);
+            console.log('Bland AI response data:', response.data);
 
-            if (response.data.status === 'success') {
+            if (response.data && response.data.status === 'success') {
                 // Update call status to show success
                 callStatus.innerHTML = `
                     <div class="call-icon">✅</div>
                     <p>Call initiated successfully!</p>
-                    <small style="color: #718096; margin-top: 8px; display: block;">Call ID: ${response.data.call_id}</small>
+                    <small style="color: #718096; margin-top: 8px; display: block;">Call ID: ${response.data.call_id || 'N/A'}</small>
                 `;
             } else {
-                throw new Error('Bland AI call failed');
+                throw new Error(response.data?.message || response.data?.error || 'Bland AI call failed');
             }
 
         } catch (error) {
             console.error('Error initiating Bland AI call:', error);
+            console.error('Error details:', {
+                message: error.message,
+                response: error.response?.data,
+                status: error.response?.status,
+                statusText: error.response?.statusText,
+                request: error.request
+            });
             
-            // Update call status to show error
+            // Update call status to show error with detailed information
             const callStatus = document.getElementById('callStatus');
+            let errorMessage = error.message;
+            
+            // Provide more specific error messages
+            if (error.response) {
+                // Server responded with error status
+                errorMessage = `Server error (${error.response.status}): ${error.response.data?.message || error.response.data?.error || error.response.statusText}`;
+            } else if (error.request) {
+                // Request was made but no response received (CORS or network issue)
+                errorMessage = 'Network error: Could not reach Bland AI API. Make sure the server is running and the proxy endpoint is available.';
+            } else {
+                // Something else happened
+                errorMessage = error.message;
+            }
+            
             callStatus.innerHTML = `
                 <div class="call-icon">❌</div>
                 <p>Failed to initiate call</p>
-                <small style="color: #e53e3e; margin-top: 8px; display: block;">Error: ${error.message}</small>
+                <small style="color: #e53e3e; margin-top: 8px; display: block;">Error: ${errorMessage}</small>
+                <small style="color: #718096; margin-top: 4px; display: block; font-size: 0.75rem;">Check browser console for details</small>
             `;
         }
     }
